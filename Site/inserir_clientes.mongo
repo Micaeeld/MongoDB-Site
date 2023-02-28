@@ -1,0 +1,13 @@
+db.clientes.insertOne({
+    nome: "micael",
+    endereco: "Rua iracema, 13",
+    email: "micaeldonadia2003@example.com",
+    senha: "micael123"
+});
+
+db.clientes.insertOne({
+    nome: "Ricardo",
+    endereco : "Rua do Ouvidor, 50",
+    email : "ricardo23@example.com",
+    senha : "ricardo123"
+})

@@ -1,0 +1,118 @@
+db.alunos.find({
+   $or : [
+      {"curso.nome": "Medicina"},
+      {"nome":"Alberto"}
+    ],
+    "nome": "Julio"
+   });
+
+db.alunos.find({"curso.nome" : 
+  {$in :
+      [
+        "Medicina", 
+        "Engenharia Químida"
+      ]
+  }
+});
+
+db.alunos.find()
+
+db.alunos.insert(
+  {
+    nome: "Fernando",
+    data_nascimento: Date('1994, 03, 26'),
+    notas : [10, 4.5, 7],
+    curso : {
+      nome : "Sistema de informação"
+    }
+  }
+);
+
+db.alunos.update(
+  {"curso.nome" : "Sistema de informação"}, /*Where */
+  {
+    $set : {
+      "curso.nome" : "Sistemas de Informação"  /*Set */
+    }
+  },
+  {
+    multi : true  /*Para selecionar todos que tenham o "Where" */
+  }
+)
+
+db.alunos.update(
+  {"_id" : ObjectId("631eee7ec755c3e3e00e5062")}, 
+  {
+    $push : {
+      "notas" : 8.5 
+    }
+  }
+)
+
+
+db.alunos.update(
+  {"_id" : ObjectId("631eee7ec755c3e3e00e5062")}, 
+  {
+    $push : {
+      "notas" : {$each : [8.5, 3] } /*Adicionar mais de um valor*/
+    }
+  }
+);
+
+db.alunos.insert({
+  "nome": "Lúcia",
+  "data_nascimento" : Date ('1987, 07, 17'),
+  "curso" : {
+    "nome" : "Matemática"
+  },
+  "notas" : [8, 9.5, 10]
+});
+
+
+ /*Maior que */
+db.alunos.find({notas : {$gt : 5}}); 
+
+/*Find apenas um */
+db.alunos.findOne({notas : {$gt : 5}});
+
+/*Ordenar por nome, em ordem crescente (1) e decrescente (-1) */
+db.alunos.find().sort({"nome" : 1})
+
+/*Limitar a 3 */
+db.alunos.find().sort({"nome" : 1}).limit(3)
+
+
+
+db.alunos.update(
+  {
+    "_id" : ObjectId("631eda72b0e69126a21a4ac8")
+  },
+  {
+    $set : {"localizacao" : {"endereco" : "Rua iracema, 13",
+    "cidade" : "Serra",
+    "Pais" : "Brasil",
+    "coordinates" : [-20.212820892883816, -40.25694251060486], type: "Point"}}
+  }
+)
+db.alunos.find()
+
+db.alunos.aggregate([
+  {
+    $geoNear : {
+      near : {
+        coordinates : [
+        -23.5640265,
+        -46.6527128
+      ],
+        type : "Point"
+      },
+      distanceField : "distancia.calculada",
+      spherical : true
+    }
+  },
+  {$skip : 1}
+])
+
+db.alunos.createIndex({
+  localizacao : "2dsphere"
+})
